@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Cartelera</title>
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body class="pagina">
+  <header>
+    <h1 id="saludo"></h1>
+    <button id="btn-salir">Cerrar sesión</button>
+  </header>
+
+  <input type="text" id="buscador" placeholder="Buscar obra por título o director">
+
+  <div class="filtros">
+    <button class="filtro activo" data-genero="TODOS">Todos</button>
+    <button class="filtro" data-genero="MUSICAL">Musical</button>
+    <button class="filtro" data-genero="TRAGEDIA">Tragedia</button>
+    <button class="filtro" data-genero="DRAMA">Drama</button>
+    <button class="filtro" data-genero="INFANTIL">Infantil</button>
+    <button class="filtro" data-genero="SUSPENSO">Suspenso</button>
+  </div>
+
+  <div id="lista-obras"></div>
+
+  <script src="js/cartelera.js"></script>
+</body>
+</html>

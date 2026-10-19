@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Asientos</title>
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body class="pagina">
+  <header>
+    <h1>Elige tu función y tus asientos</h1>
+    <button id="btn-volver">← Cartelera</button>
+  </header>
+
+  <h2>Horarios</h2>
+  <div id="horarios"></div>
+
+  <h2>Asientos</h2>
+  <p class="escenario">★ ESCENARIO ★</p>
+  <div id="mapa"></div>
+
+  <p id="resumen">Asientos elegidos: ninguno</p>
+
+
+  <div class="pago">
+    <select id="metodo">
+      <option value="TARJETA">Tarjeta</option>
+      <option value="TRANSFERENCIA">Transferencia</option>
+      <option value="EFECTIVO">Efectivo</option>
+    </select>
+    <button id="btn-comprar" class="btn-principal">Comprar</button>
+    <p id="resultado"></p>
+  </div>
+
+  <script src="js/asientos.js"></script>
+</body>
+</html>

@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Teatro Arte y Cultura</title>
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+  <main class="tarjeta">
+        <h1>Control de Acceso Teatral</h1>
+    <p class="subtitulo">Teatro Arte y Cultura</p>
+
+    <div class="roles">
+      <button class="rol activo" data-rol="CLIENTE">Cliente</button>
+      <button class="rol" data-rol="EMPLEADO">Empleado</button>
+      <button class="rol" data-rol="ADMINISTRADOR">Administrador</button>
+    </div>
+
+    <div class="pestanas" id="pestanas">
+      <button class="pestana activo" data-modo="login">Iniciar sesión</button>
+      <button class="pestana" data-modo="registro">Registrarse</button>
+    </div>
+
+    <!-- Formulario de login -->
+    <section id="form-login">
+      <label for="correo">Correo electrónico</label>
+      <input type="email" id="correo" placeholder="cliente@gmail.com">
+      <label for="clave">Contraseña</label>
+      <input type="password" id="clave" placeholder="••••••">
+      <button id="btn-entrar" class="btn-principal">Entrar</button>
+    </section>
+
+    <!-- Formulario de registro (solo clientes) -->
+    <section id="form-registro" hidden>
+      <label for="reg-nombre">Nombre completo</label>
+      <input type="text" id="reg-nombre" placeholder="Ej: Laura Sofía Restrepo">
+      <label for="reg-correo">Correo electrónico</label>
+      <input type="email" id="reg-correo" placeholder="ejemplo@correo.com">
+      <label for="reg-telefono">Teléfono móvil</label>
+      <input type="text" id="reg-telefono" placeholder="+57 312 345 6789">
+      <label for="reg-clave">Clave de acceso</label>
+      <input type="password" id="reg-clave" placeholder="Mínimo 4 caracteres">
+      <label for="reg-confirmar">Confirmar clave</label>
+      <input type="password" id="reg-confirmar" placeholder="Repite la clave">
+      <button id="btn-registrar" class="btn-principal">Registrarme</button>
+    </section>
+
+    <p id="mensaje"></p>
+    
+  </main>
+
+  <script src="js/login.js"></script>
+</body>
+</html>

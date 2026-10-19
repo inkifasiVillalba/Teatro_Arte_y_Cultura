@@ -1,7 +1,9 @@
 const API = "http://localhost:5000/api";
 const usuario = JSON.parse(sessionStorage.getItem("usuario"));
 
-if (!usuario) window.location.href = "index.html";
+if (!usuario || usuario.rol !== "EMPLEADO") {
+  window.location.href = "index.html";
+}
 
 // Cada rol vuelve a su propia pantalla
 document.getElementById("btn-volver").addEventListener("click", () => {

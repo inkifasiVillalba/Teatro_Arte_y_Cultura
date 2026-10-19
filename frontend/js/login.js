@@ -64,6 +64,8 @@ document.getElementById("btn-entrar").addEventListener("click", async () => {
     sessionStorage.setItem("usuario", JSON.stringify(datos.usuario));
       if (datos.usuario.rol === "EMPLEADO") {
     window.location.href = "empleado.html";
+    } else if (datos.usuario.rol === "ADMINISTRADOR") {
+    window.location.href = "admin.html";
   } else {
     window.location.href = "cartelera.html";
   }

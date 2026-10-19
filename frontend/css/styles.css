@@ -63,7 +63,10 @@ input {
 .pagina { display: block; padding: 24px; }
 header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; }
 header h1 { font-size: 1.3rem; text-align: left; }
-#btn-salir { padding: 8px 14px; cursor: pointer; background: transparent; color: #f5e6c8; border: 1px solid #e07b00; border-radius: 8px; }
+.acciones { display: flex; gap: 10px; }
+.acciones button { padding: 8px 14px; cursor: pointer; background: transparent; color: #f5e6c8; border: 1px solid #e07b00; border-radius: 8px; }
+.acciones button:hover { background: #e07b00; color: #fff; }
+
 
 .filtros { display: flex; gap: 6px; margin: 12px 0 20px; flex-wrap: wrap; }
 .filtro { padding: 8px 14px; cursor: pointer; background: #1a0a0a; color: #f5e6c8; border: 1px solid #5a2a2a; border-radius: 20px; }
@@ -90,3 +93,7 @@ header h1 { font-size: 1.3rem; text-align: left; }
 .pago { max-width: 420px; margin: 20px auto; text-align: center; }
 .pago select { width: 100%; padding: 10px; background: #1a0a0a; color: #f5e6c8; border: 1px solid #5a2a2a; border-radius: 8px; }
 #resultado { margin-top: 12px; color: #6bd68a; }
+
+
+#btn-volver { padding: 8px 14px; cursor: pointer; background: transparent; color: #f5e6c8; border: 1px solid #e07b00; border-radius: 8px; }
+#btn-volver:hover { background: #e07b00; color: #fff; }

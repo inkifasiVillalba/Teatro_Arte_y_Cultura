@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Panel del administrador</title>
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body class="pagina">
+  <header>
+    <h1 id="saludo"></h1>
+    <button id="btn-salir">Cerrar sesión</button>
+  </header>
+
+  <h2>Registrar nueva obra</h2>
+  <div class="pago">
+    <input type="text" id="titulo" placeholder="Título">
+    <select id="genero">
+      <option value="MUSICAL">Musical</option>
+      <option value="TRAGEDIA">Tragedia</option>
+      <option value="DRAMA">Drama</option>
+      <option value="INFANTIL">Infantil</option>
+      <option value="SUSPENSO">Suspenso</option>
+    </select>
+    <input type="text" id="clasificacion" placeholder="Clasificación (TP, +12, +16)">
+    <input type="text" id="director" placeholder="Director">
+    <input type="text" id="descripcion" placeholder="Descripción">
+    <input type="number" id="duracion" placeholder="Duración en minutos">
+    <button id="btn-crear" class="btn-principal">Registrar obra</button>
+    <p id="resultado"></p>
+  </div>
+
+  <h2>Obras actuales</h2>
+  <div id="lista-obras"></div>
+
+  <script src="js/admin.js"></script>
+</body>
+</html>

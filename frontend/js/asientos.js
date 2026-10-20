@@ -11,6 +11,40 @@ document.getElementById("btn-volver").addEventListener("click", () => {
   window.location.href = "cartelera.html";
 });
 
+
+
+document.getElementById("btn-reservar").addEventListener("click", async () => {
+  const resultado = document.getElementById("resultado");
+
+  if (!funcionActual || elegidos.length === 0) {
+    resultado.textContent = "Elige una función y al menos un asiento";
+    return;
+  }
+
+  const respuesta = await fetch(`${API}/reservar`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      id_cliente: usuario.id,
+      id_funcion: funcionActual.id,
+      asientos: elegidos.map((e) => e.id),
+      precio: funcionActual.precio,
+    }),
+  });
+  const datos = await respuesta.json();
+
+  if (!respuesta.ok) {
+    resultado.style.color = "#ff6b6b";
+    resultado.textContent = datos.error;
+    return;
+  }
+  resultado.style.color = "#6bd68a";
+  resultado.textContent =
+    `Reserva #${datos.id_reserva} creada. Total a pagar en taquilla: $${datos.total}`;
+  elegirFuncion(funcionActual);   // los reservados quedan grises
+});
+
+
 async function cargarHorarios() {
   const respuesta = await fetch(`${API}/obras/${idObra}/funciones`);
   const funciones = await respuesta.json();

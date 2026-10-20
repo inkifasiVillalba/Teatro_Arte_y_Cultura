@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Venta en taquilla</title>
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body class="pagina">
+  <header>
+    <h1>Venta en taquilla</h1>
+    <button id="btn-volver">← Panel</button>
+  </header>
+
+  <h2>Función</h2>
+  <select id="funcion"></select>
+
+  <p class="escenario">★ ESCENARIO ★</p>
+  <div id="mapa"></div>
+  <p id="resumen">Asientos: ninguno</p>
+
+  <div class="pago">
+    <input type="text" id="asistente" placeholder="Nombre del asistente">
+    <select id="metodo">
+      <option value="EFECTIVO">Efectivo</option>
+      <option value="TARJETA">Tarjeta</option>
+      <option value="TRANSFERENCIA">Transferencia</option>
+    </select>
+    <button id="btn-cobrar" class="btn-principal">Cobrar y emitir boletas</button>
+    <p id="resultado"></p>
+  </div>
+
+  <script src="js/taquilla.js"></script>
+</body>
+</html>

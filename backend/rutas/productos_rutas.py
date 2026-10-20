@@ -18,3 +18,12 @@ def vender_producto():
     except ValueError as error:
         return jsonify({"error": str(error)}), 400
     return jsonify(resultado)
+
+@productos_bp.route("/api/productos/ajustar", methods=["POST"])
+def ajustar_producto():
+    datos = request.get_json() or {}
+    try:
+        resultado = servicio.ajustar_stock(datos.get("id_producto"), datos.get("cambio", 0))
+    except ValueError as error:
+        return jsonify({"error": str(error)}), 400
+    return jsonify(resultado)

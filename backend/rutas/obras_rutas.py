@@ -31,3 +31,12 @@ def crear_obra():
     except ValueError as error:
         return jsonify({"error": str(error)}), 400
     return jsonify(obra), 201
+
+
+@obras_bp.route("/api/obras/<int:id_obra>/desactivar", methods=["POST"])
+def desactivar_obra(id_obra):
+    try:
+        servicio.desactivar(id_obra)
+    except ValueError as error:
+        return jsonify({"error": str(error)}), 400
+    return jsonify({"mensaje": "Obra desactivada"})

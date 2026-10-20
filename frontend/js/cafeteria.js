@@ -5,12 +5,11 @@ if (!usuario || usuario.rol !== "EMPLEADO") {
   window.location.href = "index.html";
 }
 
-// Cada rol vuelve a su propia pantalla
+// Solo el empleado llega aquí, así que vuelve a su panel
 document.getElementById("btn-volver").addEventListener("click", () => {
-  if (usuario.rol === "EMPLEADO") window.location.href = "empleado.html";
-  else if (usuario.rol === "ADMINISTRADOR") window.location.href = "admin.html";
-  else window.location.href = "cartelera.html";
+  window.location.href = "empleado.html";
 });
+
 
 async function cargarProductos() {
   const respuesta = await fetch(`${API}/productos`);

@@ -12,7 +12,7 @@ class FuncionRepositorio:
         cursor.execute(
             "SELECT f.id, f.fecha_hora, f.precio, s.nombre AS sala, s.capacidad "
             "FROM funciones f JOIN salas s ON f.id_sala = s.id "
-            "WHERE f.id_obra = %s AND f.estado = 'PROGRAMADA' "
+                        "WHERE f.id_obra = %s AND f.estado = 'PROGRAMADA' AND f.fecha_hora >= NOW() "
             "ORDER BY f.fecha_hora",
             (id_obra,),
         )
@@ -50,3 +50,51 @@ class FuncionRepositorio:
             }
             for f in filas
         ]
+
+
+    def listar_todas(self):
+        conexion = self.__conectar()
+        cursor = conexion.cursor(dictionary=True)
+        cursor.execute(
+            "SELECT f.id, f.fecha_hora, f.precio, f.estado, "
+            " o.titulo, o.duracion_min, s.nombre AS sala, s.capacidad, "
+            " (SELECT COUNT(*) FROM entradas e WHERE e.id_funcion = f.id "
+            "  AND e.estado <> 'ANULADA') AS vendidas "
+            "FROM funciones f "
+            "JOIN obras o ON f.id_obra = o.id "
+            "JOIN salas s ON f.id_sala = s.id "
+            "ORDER BY f.fecha_hora"
+        )
+        filas = cursor.fetchall()
+        cursor.close()
+        conexion.close()
+        return filas
+
+    def listar_de_sala(self, id_sala):
+        """Funciones activas de una sala, con la duración de su obra."""
+        conexion = self.__conectar()
+        cursor = conexion.cursor(dictionary=True)
+        cursor.execute(
+            "SELECT f.id, f.fecha_hora, f.precio, o.titulo, o.duracion_min "
+            "FROM funciones f JOIN obras o ON f.id_obra = o.id "
+            "WHERE f.id_sala = %s AND f.estado <> 'CANCELADA'",
+            (id_sala,),
+        )
+        filas = cursor.fetchall()
+        cursor.close()
+        conexion.close()
+        return filas
+
+    def crear(self, id_obra, id_sala, fecha_hora, precio):
+        conexion = self.__conectar()
+        cursor = conexion.cursor()
+        cursor.execute(
+            "INSERT INTO funciones (id_obra, id_sala, fecha_hora, precio) "
+            "VALUES (%s, %s, %s, %s)",
+            (id_obra, id_sala, fecha_hora, precio),
+        )
+        conexion.commit()
+        nuevo_id = cursor.lastrowid
+        cursor.close()
+        conexion.close()
+        return nuevo_id

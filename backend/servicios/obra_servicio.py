@@ -24,3 +24,11 @@ class ObraServicio:
         nuevo_id = self.__repo.crear(titulo, genero, clasificacion, director, descripcion, duracion)
         obra = Obra(nuevo_id, titulo, genero, clasificacion, director, descripcion, duracion)
         return obra.to_dict()
+
+
+    def desactivar(self, id_obra):
+        obra = self.__repo.buscar_por_id(id_obra)
+        if obra is None:
+            raise ValueError("Obra inexistente")
+        obra.desactivar()   # la regla vive en el modelo
+        self.__repo.actualizar_activa(obra.id, obra.activa)

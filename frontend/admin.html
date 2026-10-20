@@ -13,27 +13,65 @@
     </div>
   </header>
 
-  <h2>Registrar nueva obra</h2>
-  <div class="pago">
-    <input type="text" id="titulo" placeholder="Título">
-    <select id="genero">
-      <option value="MUSICAL">Musical</option>
-      <option value="TRAGEDIA">Tragedia</option>
-      <option value="DRAMA">Drama</option>
-      <option value="INFANTIL">Infantil</option>
-      <option value="SUSPENSO">Suspenso</option>
-    </select>
-    <input type="text" id="clasificacion" placeholder="Clasificación (TP, +12, +16)">
-    <input type="text" id="director" placeholder="Director">
-    <input type="text" id="descripcion" placeholder="Descripción">
-    <input type="number" id="duracion" placeholder="Duración en minutos">
-    <button id="btn-crear" class="btn-principal">Registrar obra</button>
-    <p id="resultado"></p>
-  </div>
+  <nav class="menu">
+    <button class="tab activo" data-seccion="obras">Obras</button>
+    <button class="tab" data-seccion="programar">Programar</button>
+    <button class="tab" data-seccion="inventario">Inventario</button>
+  </nav>
 
-  <h2>Obras actuales</h2>
-  <div id="lista-obras"></div>
+  <!-- OBRAS -->
+  <section id="seccion-obras">
+    <h2>Registrar nueva obra</h2>
+    <div class="pago">
+      <input type="text" id="titulo" placeholder="Título">
+      <select id="genero">
+        <option value="MUSICAL">Musical</option>
+        <option value="TRAGEDIA">Tragedia</option>
+        <option value="DRAMA">Drama</option>
+        <option value="INFANTIL">Infantil</option>
+        <option value="SUSPENSO">Suspenso</option>
+      </select>
+      <input type="text" id="clasificacion" placeholder="Clasificación (TP, +12, +16)">
+      <input type="text" id="director" placeholder="Director">
+      <input type="text" id="descripcion" placeholder="Descripción">
+      <input type="number" id="duracion" placeholder="Duración en minutos">
+      <button id="btn-crear" class="btn-principal">Registrar obra</button>
+      <p id="resultado"></p>
+    </div>
 
+    <h2>Obras actuales</h2>
+    <div id="lista-obras"></div>
+  </section>
+
+  <!-- PROGRAMAR FUNCIONES -->
+  <section id="seccion-programar" hidden>
+    <h2>Programar función</h2>
+    <p class="nota">Regla R3: una sala no puede tener dos funciones en el mismo horario. El sistema suma la duración de la obra + 30 minutos de intervalo.</p>
+    <div class="pago">
+      <select id="f-obra"></select>
+      <select id="f-sala"></select>
+      <input type="datetime-local" id="f-fecha">
+      <input type="number" id="f-precio" placeholder="Precio base">
+      <button id="btn-programar" class="btn-principal">Programar función</button>
+      <p id="resultado-funcion"></p>
+    </div>
+
+    <h2>Funciones programadas</h2>
+    <table class="tabla">
+      <thead>
+        <tr><th>Obra</th><th>Sala</th><th>Fecha</th><th>Horario</th><th>Precio</th><th>Ocupación</th><th>Estado</th></tr>
+      </thead>
+      <tbody id="tabla-funciones"></tbody>
+    </table>
+  </section>
+  
+ 
+  <section id="seccion-inventario" hidden>
+    <h2>Inventario de cafetería</h2>
+    <p id="resultado-inventario"></p>
+    <div id="lista-inventario"></div>
+  </section>
+  
   <script src="js/admin.js"></script>
 </body>
 </html>

@@ -41,3 +41,14 @@ class ProductoServicio:
             "total": producto.precio * cantidad,
             "existencias": producto.existencias,
         }
+
+
+    def ajustar_stock(self, id_producto, cambio):
+        fila = self.__repo.buscar_por_id(id_producto)
+        if fila is None:
+            raise ValueError("Producto inexistente")
+        nuevas = fila["existencias"] + int(cambio)
+        if nuevas < 0:
+            raise ValueError("El stock no puede quedar negativo")
+        self.__repo.actualizar_existencias(id_producto, nuevas)
+        return {"existencias": nuevas}

@@ -3,15 +3,15 @@ from config import DB_CONFIG
 
 
 class VentaRepositorio:
-    def guardar_compra(self, id_cliente, id_funcion, asientos, precio, metodo):
+    def guardar_compra(self, id_cliente, id_funcion, asientos, precio, metodo,id_empleado=None):
         """Guarda venta, entradas y pago en una sola transacción."""
         conexion = mysql.connector.connect(**DB_CONFIG)
         cursor = conexion.cursor()
         try:
             total = precio * len(asientos)
             cursor.execute(
-                "INSERT INTO ventas (id_cliente, total) VALUES (%s, %s)",
-                (id_cliente, total),
+                "INSERT INTO ventas (id_cliente, id_empleado, total) VALUES (%s, %s, %s)",
+                (id_cliente, id_empleado, total),
             )
             id_venta = cursor.lastrowid
 

@@ -36,3 +36,25 @@ class ObraRepositorio:
         cursor.close()
         conexion.close()
         return nuevo_id
+
+
+
+    def buscar_por_id(self, id_obra):
+        conexion = mysql.connector.connect(**DB_CONFIG)
+        cursor = conexion.cursor(dictionary=True)
+        cursor.execute("SELECT * FROM obras WHERE id = %s", (id_obra,))
+        fila = cursor.fetchone()
+        cursor.close()
+        conexion.close()
+        return Obra(**fila) if fila else None
+    
+    def actualizar_activa(self, id_obra, activa):
+        conexion = mysql.connector.connect(**DB_CONFIG)
+        cursor = conexion.cursor()
+        cursor.execute("UPDATE obras SET activa = %s WHERE id = %s", (activa, id_obra))
+        conexion.commit()
+        cursor.close()
+        conexion.close()
+
+
+    

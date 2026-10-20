@@ -15,6 +15,7 @@ def comprar():
             datos.get("asientos", []),
             datos.get("precio", 0),
             datos.get("metodo", ""),
+            datos.get("id_empleado"),
         )
     except ValueError as error:
         return jsonify({"error": str(error)}), 400

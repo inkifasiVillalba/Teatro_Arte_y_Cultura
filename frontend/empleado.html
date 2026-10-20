@@ -10,6 +10,7 @@
     <h1 id="saludo"></h1>
     <div class="acciones">
       <button onclick="window.location.href='cafeteria.html'">Cafetería</button>
+            <button onclick="window.location.href='taquilla.html'">Taquilla</button>
       <button id="btn-salir">Cerrar sesión</button>
     </div>
   </header>
@@ -21,6 +22,18 @@
     <button id="btn-validar" class="btn-principal">Validar</button>
     <p id="resultado"></p>
   </div>
+
+
+  <h2>Reservas pendientes</h2>
+  <div class="pago">
+    <select id="metodo-cobro">
+      <option value="EFECTIVO">Efectivo</option>
+      <option value="TARJETA">Tarjeta</option>
+      <option value="TRANSFERENCIA">Transferencia</option>
+    </select>
+    <p id="resultado-reservas"></p>
+  </div>
+  <div id="lista-reservas"></div>
 
   <script src="js/empleado.js"></script>
 </body>

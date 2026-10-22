@@ -24,7 +24,7 @@ async function cargarProductos() {
         <h2>${p.nombre}</h2>
         <p>$${p.precio}</p>
         <input type="number" id="cant-${p.id}" value="1" min="1">
-        <button class="btn-principal" onclick="vender(${p.id})">Comprar</button>
+        <button class="btn-principal" onclick="vender(${p.id})">Vender</button>
       </div>`;
   }
 }

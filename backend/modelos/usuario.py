@@ -87,3 +87,6 @@ class Administrador(Usuario):
         datos["rol"] = "ADMINISTRADOR"
         datos["nivel_acceso"] = self.__nivel_acceso
         return datos
+
+
+

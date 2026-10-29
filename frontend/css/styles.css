@@ -106,3 +106,12 @@ header h1 { font-size: 1.3rem; text-align: left; }
 .tabla { width: 100%; border-collapse: collapse; margin-top: 12px; }
 .tabla th, .tabla td { padding: 10px; text-align: left; border-bottom: 1px solid #5a2a2a; font-size: 0.9rem; }
 .tabla th { color: #f5c86b; }
+
+/* ---- Dashboard y alertas de stock ---- */
+.kpis { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px; margin: 12px 0 24px; }
+.kpi { background: #2a1010; border: 1px solid #5a2a2a; border-radius: 12px; padding: 16px; }
+.kpi strong { display: block; font-size: 1.6rem; color: #f5c86b; margin: 6px 0; }
+.kpi small { color: #6bd68a; }
+.barra { height: 10px; background: #1a0a0a; border-radius: 99px; overflow: hidden; margin: 8px 0; }
+.barra-llena { height: 100%; background: linear-gradient(90deg, #6bd68a, #f5c86b, #e07b00); }
+.alerta { background: #5a1a1a; color: #ff9b9b; padding: 2px 8px; border-radius: 6px; font-size: 0.75rem; font-weight: 700; }

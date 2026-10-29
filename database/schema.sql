@@ -65,6 +65,7 @@ CREATE TABLE productos (
     categoria VARCHAR(50) NOT NULL,
     precio DECIMAL(10,2) NOT NULL,
     existencias INT NOT NULL DEFAULT 0,
+    stock_minimo INT NOT NULL DEFAULT 10,   -- alerta de stock bajo
     activo BOOLEAN NOT NULL DEFAULT TRUE,
     CHECK (existencias >= 0)               -- regla R7: sin sobreventa
 );
@@ -166,16 +167,16 @@ INSERT INTO obras (titulo, genero, clasificacion, director, descripcion, duracio
 ('El Principito: El Viaje de las Estrellas', 'INFANTIL', 'TP', 'Andrés Felipe Morales', 'Adaptación del clásico', 80),
 ('Crimen y Misterio en la Mansión Blackwood', 'SUSPENSO', '+16', 'Rodrigo Saldarriaga', 'Un misterio por resolver', 110);
 
-INSERT INTO productos (nombre, categoria, precio, existencias) VALUES
-('Palomitas Artesanales Caramelo & Sal Marina (Grande)', 'Snacks', 16000, 42),
-('Copa de Vino Tinto Malbec Reserva', 'Bebidas', 24000, 28),
-('Café Espresso Colombiano de Origen Especial', 'Bebidas', 8500, 65),
-('Chocolates Finos de Autor (Caja 6 bombones)', 'Dulcería', 19000, 8),
-('Agua de Manantial con Gas & Rodaja de Cítrico', 'Bebidas', 7000, 50),
-('Combo Gala Teatral (2 Copas Vino + Tabla Quesos & Uvas)', 'Combos', 52000, 14);
+INSERT INTO productos (nombre, categoria, precio, existencias, stock_minimo) VALUES
+('Palomitas Artesanales Caramelo & Sal Marina (Grande)', 'Snacks', 16000, 42, 15),
+('Copa de Vino Tinto Malbec Reserva', 'Bebidas', 24000, 28, 10),
+('Café Espresso Colombiano de Origen Especial', 'Bebidas', 8500, 65, 20),
+('Chocolates Finos de Autor (Caja 6 bombones)', 'Dulcería', 19000, 8, 12),
+('Agua de Manantial con Gas & Rodaja de Cítrico', 'Bebidas', 7000, 50, 15),
+('Combo Gala Teatral (2 Copas Vino + Tabla Quesos & Uvas)', 'Combos', 52000, 14, 5);
 
 INSERT INTO funciones (id_obra, id_sala, fecha_hora, precio) VALUES
-(1, 1, '2026-10-18 19:00:00', 65000),
-(2, 1, '2026-10-19 20:00:00', 55000),
-(4, 2, '2026-10-18 16:00:00', 40000),
-(3, 2, '2026-10-18 19:30:00', 50000);
+(1, 1, DATE_FORMAT(DATE_ADD(NOW(), INTERVAL 1 DAY), '%Y-%m-%d 19:00:00'), 65000),
+(2, 1, DATE_FORMAT(DATE_ADD(NOW(), INTERVAL 2 DAY), '%Y-%m-%d 20:00:00'), 55000),
+(4, 2, DATE_FORMAT(DATE_ADD(NOW(), INTERVAL 2 DAY), '%Y-%m-%d 16:00:00'), 40000),
+(3, 2, DATE_FORMAT(DATE_ADD(NOW(), INTERVAL 3 DAY), '%Y-%m-%d 19:30:00'), 50000);

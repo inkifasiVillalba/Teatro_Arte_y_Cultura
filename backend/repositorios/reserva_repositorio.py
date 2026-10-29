@@ -10,6 +10,12 @@ class ReservaRepositorio:
         conexion = self.__conectar()
         cursor = conexion.cursor()
         try:
+            cursor.execute("SELECT precio FROM funciones WHERE id = %s", (id_funcion,))
+            fila = cursor.fetchone()
+            if fila is None:
+                raise ValueError("Función inexistente")
+            precio = float(fila[0])   # el precio lo decide el servidor, no el navegador
+
             # Ningún asiento puede estar vendido ni reservado
             for id_asiento in asientos:
                 cursor.execute(

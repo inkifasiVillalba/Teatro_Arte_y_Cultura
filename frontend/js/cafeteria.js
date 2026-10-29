@@ -20,7 +20,8 @@ async function cargarProductos() {
   for (const p of productos) {
     lista.innerHTML += `
       <div class="obra">
-        <span class="etiqueta">${p.categoria} · Stock: ${p.existencias}</span>
+        <span class="etiqueta">${p.categoria} · Stock: ${p.existencias} · Mínimo: ${p.stock_minimo}</span>
+        ${p.bajo_stock ? '<span class="alerta">Stock bajo</span>' : ''}
         <h2>${p.nombre}</h2>
         <p>$${p.precio}</p>
         <input type="number" id="cant-${p.id}" value="1" min="1">
@@ -36,7 +37,7 @@ async function vender(idProducto) {
   const respuesta = await fetch(`${API}/productos/vender`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ id_producto: idProducto, cantidad }),
+    body: JSON.stringify({ id_producto: idProducto, cantidad, id_empleado: usuario.id }),
   });
   const datos = await respuesta.json();
 

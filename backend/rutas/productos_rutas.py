@@ -14,7 +14,7 @@ def listar_productos():
 def vender_producto():
     datos = request.get_json() or {}
     try:
-        resultado = servicio.vender(datos.get("id_producto"), datos.get("cantidad"))
+        resultado = servicio.vender(datos.get("id_producto"), datos.get("cantidad"), datos.get("id_empleado"))
     except ValueError as error:
         return jsonify({"error": str(error)}), 400
     return jsonify(resultado)

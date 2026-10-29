@@ -8,6 +8,8 @@ from rutas.entradas_rutas import entradas_bp
 from rutas.productos_rutas import productos_bp
 from rutas.reservas_rutas import reservas_bp
 from rutas.historial_rutas import historial_bp
+from rutas.dashboard_rutas import dashboard_bp
+from rutas.usuarios_rutas import usuarios_bp
 
 
 app = Flask(__name__)
@@ -20,6 +22,9 @@ app.register_blueprint(entradas_bp)
 app.register_blueprint(productos_bp)
 app.register_blueprint(reservas_bp)
 app.register_blueprint(historial_bp)
+app.register_blueprint(dashboard_bp)
+app.register_blueprint(usuarios_bp)
+
 
 @app.route("/api/salud")
 def salud():

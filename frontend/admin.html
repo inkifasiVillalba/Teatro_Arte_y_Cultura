@@ -14,13 +14,28 @@
   </header>
 
   <nav class="menu">
-    <button class="tab activo" data-seccion="obras">Obras</button>
+    <button class="tab activo" data-seccion="dashboard">Dashboard</button>
+    <button class="tab" data-seccion="obras">Obras</button>
     <button class="tab" data-seccion="programar">Programar</button>
     <button class="tab" data-seccion="inventario">Inventario</button>
+        <button class="tab" data-seccion="usuarios">Usuarios</button>
   </nav>
 
+  <!-- DASHBOARD -->
+  <section id="seccion-dashboard">
+    <h2>Indicadores del teatro</h2>
+    <div class="kpis" id="kpis"></div>
+    <h2>Ocupación de salas</h2>
+    <div id="ocupacion-salas"></div>
+    <h2>Control de inventario y alertas de reabastecimiento</h2>
+    <table class="tabla">
+      <thead><tr><th>Producto</th><th>Stock</th><th>Mínimo</th><th>Estado</th></tr></thead>
+      <tbody id="tabla-alertas"></tbody>
+    </table>
+  </section>
+
   <!-- OBRAS -->
-  <section id="seccion-obras">
+  <section id="seccion-obras" hidden>
     <h2>Registrar nueva obra</h2>
     <div class="pago">
       <input type="text" id="titulo" placeholder="Título">
@@ -71,7 +86,34 @@
     <p id="resultado-inventario"></p>
     <div id="lista-inventario"></div>
   </section>
-  
+
+
+    <!-- USUARIOS -->
+  <section id="seccion-usuarios" hidden>
+    <h2>Registrar personal del teatro</h2>
+    <div class="pago">
+      <input type="text" id="u-nombre" placeholder="Nombre completo">
+      <input type="email" id="u-correo" placeholder="Correo">
+      <select id="u-rol">
+        <option value="EMPLEADO">Empleado</option>
+        <option value="ADMINISTRADOR">Administrador</option>
+      </select>
+      <input type="text" id="u-cargo" placeholder="Cargo (ej: Taquillero)">
+      <input type="password" id="u-clave" placeholder="Clave (mínimo 4 caracteres)">
+      <input type="password" id="u-confirmar" placeholder="Confirmar clave">
+      <button id="btn-crear-usuario" class="btn-principal">Registrar usuario</button>
+      <p id="resultado-usuario"></p>
+    </div>
+
+    <h2>Usuarios del sistema</h2>
+    <table class="tabla">
+      <thead>
+        <tr><th>Usuario</th><th>Correo</th><th>Rol</th><th>Cargo / Nivel / Teléfono</th><th>Último acceso</th><th>Estado</th></tr>
+      </thead>
+      <tbody id="tabla-usuarios"></tbody>
+    </table>
+  </section>
+
   <script src="js/admin.js"></script>
 </body>
 </html>

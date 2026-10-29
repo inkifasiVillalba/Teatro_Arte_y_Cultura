@@ -10,12 +10,12 @@ class ProductoServicio:
         filas = self.__repo.listar_activos()
         productos = [
             Producto(f["id"], f["nombre"], f["categoria"],
-                     float(f["precio"]), f["existencias"], f["activo"])
+                     float(f["precio"]), f["existencias"], f["activo"], f["stock_minimo"])
             for f in filas
         ]
         return [p.to_dict() for p in productos]
 
-    def vender(self, id_producto, cantidad):
+    def vender(self, id_producto, cantidad, id_empleado=None):
         try:
             cantidad = int(cantidad)
         except (TypeError, ValueError):
@@ -29,12 +29,13 @@ class ProductoServicio:
 
         # Convertimos la fila en un objeto Producto del modelo
         producto = Producto(fila["id"], fila["nombre"], fila["categoria"],
-                            float(fila["precio"]), fila["existencias"], fila["activo"])
+                            float(fila["precio"]), fila["existencias"], fila["activo"], fila["stock_minimo"])
 
         # La regla R7 vive en el modelo: lanza ValueError si no hay stock
         producto.descontar_stock(cantidad)
 
-        self.__repo.actualizar_existencias(producto.id, producto.existencias)
+        # Descuenta el stock y guarda la venta (venta + detalle + pago) en una transacción
+        self.__repo.registrar_venta(producto.id, cantidad, producto.precio, id_empleado)
         return {
             "producto": producto.nombre,
             "cantidad": cantidad,

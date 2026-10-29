@@ -8,6 +8,11 @@ class VentaRepositorio:
         conexion = mysql.connector.connect(**DB_CONFIG)
         cursor = conexion.cursor()
         try:
+            cursor.execute("SELECT precio FROM funciones WHERE id = %s", (id_funcion,))
+            fila = cursor.fetchone()
+            if fila is None:
+                raise ValueError("Función inexistente")
+            precio = float(fila[0])   # el precio lo decide el servidor, no el navegador
             total = precio * len(asientos)
             cursor.execute(
                 "INSERT INTO ventas (id_cliente, id_empleado, total) VALUES (%s, %s, %s)",

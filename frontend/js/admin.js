@@ -43,6 +43,7 @@ document.getElementById("btn-crear").addEventListener("click", async () => {
       director: document.getElementById("director").value,
       descripcion: document.getElementById("descripcion").value,
       duracion_min: document.getElementById("duracion").value,
+      id_usuario: usuario.id,
     }),
   });
   const datos = await respuesta.json();
@@ -59,7 +60,11 @@ document.getElementById("btn-crear").addEventListener("click", async () => {
 
 async function desactivarObra(id) {
   const mensaje = document.getElementById("resultado");
-  const respuesta = await fetch(`${API}/obras/${id}/desactivar`, { method: "POST" });
+  const respuesta = await fetch(`${API}/obras/${id}/desactivar`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ id_usuario: usuario.id }),
+  });
   const datos = await respuesta.json();
   mensaje.style.color = respuesta.ok ? "#6bd68a" : "#ff6b6b";
   mensaje.textContent = respuesta.ok ? datos.mensaje : datos.error;
@@ -71,15 +76,24 @@ document.querySelectorAll(".tab").forEach((boton) => {
   boton.addEventListener("click", () => {
     document.querySelectorAll(".tab").forEach((b) => b.classList.remove("activo"));
     boton.classList.add("activo");
-    for (const nombre of ["dashboard", "obras", "programar", "inventario","usuarios"]) {
+    for (const nombre of ["dashboard", "obras", "programar", "inventario", "usuarios", "auditoria"]) {
       document.getElementById(`seccion-${nombre}`).hidden = boton.dataset.seccion !== nombre;
     }
     if (boton.dataset.seccion === "dashboard") cargarDashboard();
     if (boton.dataset.seccion === "programar") cargarProgramacion();
     if (boton.dataset.seccion === "inventario") cargarInventario();
     if (boton.dataset.seccion === "usuarios") cargarUsuarios();
+    if (boton.dataset.seccion === "auditoria") cargarAuditoria();
   });
 });
+
+
+function etiquetaEstado(estado) {
+  if (estado === "CANCELADA") return '<span class="alerta">CANCELADA</span>';
+  if (estado === "FINALIZADA") return '<span style="color:#888">FINALIZADA</span>';
+  if (estado === "EN_CURSO") return '<span class="ok">EN_CURSO</span>';
+  return estado;
+}
 
 // ---------- Programar funciones ----------
 async function cargarProgramacion() {
@@ -98,9 +112,24 @@ async function cargarProgramacion() {
       <tr>
         <td>${f.obra}</td><td>${f.sala}</td><td>${f.fecha}</td>
         <td>${f.horario}</td><td>$${f.precio}</td>
-        <td>${f.ocupacion}</td><td>${f.estado}</td>
+        <td>${f.ocupacion}</td><td>${etiquetaEstado(f.estado)}</td>
+        <td>${f.estado === "PROGRAMADA" ? `<button onclick="cancelarFuncion(${f.id})">Cancelar</button>` : ""}</td>
       </tr>`)
     .join("");
+}
+
+async function cancelarFuncion(id) {
+  if (!confirm("¿Seguro que quieres cancelar esta función?")) return;
+  const mensaje = document.getElementById("resultado-funcion");
+  const respuesta = await fetch(`${API}/funciones/${id}/cancelar`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ id_usuario: usuario.id }),
+  });
+  const datos = await respuesta.json();
+  mensaje.style.color = respuesta.ok ? "#6bd68a" : "#ff6b6b";
+  mensaje.textContent = respuesta.ok ? datos.mensaje : datos.error;
+  cargarProgramacion();
 }
 
 document.getElementById("btn-programar").addEventListener("click", async () => {
@@ -113,6 +142,7 @@ document.getElementById("btn-programar").addEventListener("click", async () => {
       id_sala: document.getElementById("f-sala").value,
       fecha_hora: document.getElementById("f-fecha").value,
       precio: document.getElementById("f-precio").value,
+      id_usuario: usuario.id,
     }),
   });
   const datos = await respuesta.json();
@@ -150,7 +180,7 @@ async function ajustarStock(id, cambio) {
   const respuesta = await fetch(`${API}/productos/ajustar`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ id_producto: id, cambio }),
+    body: JSON.stringify({ id_producto: id, cambio, id_usuario: usuario.id }),
   });
   const datos = await respuesta.json();
   mensaje.style.color = respuesta.ok ? "#6bd68a" : "#ff6b6b";
@@ -241,6 +271,20 @@ document.getElementById("btn-crear-usuario").addEventListener("click", async () 
   }
   cargarUsuarios();
 });
+
+// ---------- Auditoría ----------
+async function cargarAuditoria() {
+  const respuesta = await fetch(`${API}/auditoria?id_admin=${usuario.id}`);
+  const registros = await respuesta.json();
+  if (!respuesta.ok) return;
+  document.getElementById("tabla-auditoria").innerHTML = registros
+    .map((r) => `
+      <tr>
+        <td>${r.fecha}</td><td>${r.usuario}</td>
+        <td><span class="alerta">${r.accion}</span></td><td>${r.detalle}</td>
+      </tr>`)
+    .join("");
+}
 
 cargarObras();
 cargarDashboard();

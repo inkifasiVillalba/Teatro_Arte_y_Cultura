@@ -1,12 +1,13 @@
 from modelos.obra import Obra
 from repositorios.obra_repositorio import ObraRepositorio
-
+from servicios.auditoria_servicio import AuditoriaServicio
 
 class ObraServicio:
     def __init__(self):
         self.__repo = ObraRepositorio()
+        self.__auditoria = AuditoriaServicio()
 
-    def crear_obra(self, titulo, genero, clasificacion, director, descripcion, duracion):
+    def crear_obra(self, titulo, genero, clasificacion, director, descripcion, duracion, id_usuario=None):
         titulo = titulo.strip()
         if not titulo or not director.strip():
             raise ValueError("Título y director son obligatorios")
@@ -23,12 +24,16 @@ class ObraServicio:
 
         nuevo_id = self.__repo.crear(titulo, genero, clasificacion, director, descripcion, duracion)
         obra = Obra(nuevo_id, titulo, genero, clasificacion, director, descripcion, duracion)
+        self.__auditoria.registrar("CREAR_OBRA", f'Obra "{titulo}" ({genero})', id_usuario)
         return obra.to_dict()
+       
+    
 
 
-    def desactivar(self, id_obra):
+    def desactivar(self, id_obra, id_usuario= None):
         obra = self.__repo.buscar_por_id(id_obra)
         if obra is None:
             raise ValueError("Obra inexistente")
         obra.desactivar()   # la regla vive en el modelo
         self.__repo.actualizar_activa(obra.id, obra.activa)
+        self.__auditoria.registrar("DESACTIVAR_OBRA", f'Obra "{obra.titulo}" desactivada', id_usuario)

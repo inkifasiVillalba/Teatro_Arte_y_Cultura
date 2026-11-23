@@ -1,11 +1,12 @@
 import hashlib
 from modelos.usuario import Cliente, Empleado, Administrador
 from repositorios.usuario_repositorio import UsuarioRepositorio
-
+from servicios.auditoria_servicio import AuditoriaServicio 
 
 class AutenticacionServicio:
     def __init__(self):
         self.__repo = UsuarioRepositorio()
+        self.__auditoria= AuditoriaServicio()
 
     def __fila_a_objeto(self, fila):
         """Convierte una fila de la BD en Cliente, Empleado o Administrador."""
@@ -27,7 +28,9 @@ class AutenticacionServicio:
             return None
 
         self.__repo.actualizar_ultimo_acceso(fila["id"])
+        self.__auditoria.registrar("INICIO_SESION", f"Ingresó como {rol}", fila["id"])   # <-- nueva
         return self.__fila_a_objeto(fila).to_dict()
+        
 
 
     def registrar_cliente(self, nombre, correo, telefono, clave, confirmar):
@@ -47,4 +50,5 @@ class AutenticacionServicio:
 
         clave_hash = hashlib.sha256(clave.encode()).hexdigest()
         nuevo_id = self.__repo.crear_cliente(nombre, correo, clave_hash, telefono)
+        self.__auditoria.registrar("REGISTRO_CLIENTE", f"Nuevo cliente: {nombre}", nuevo_id) 
         return Cliente(nuevo_id, nombre, correo, "", telefono).to_dict() 

@@ -1,6 +1,7 @@
 import hashlib
 from modelos.usuario import Empleado, Administrador
 from repositorios.usuario_repositorio import UsuarioRepositorio
+from servicios.auditoria_servicio import AuditoriaServicio
 
 
 class UsuarioServicio:
@@ -10,6 +11,7 @@ class UsuarioServicio:
 
     def __init__(self):
         self.__repo = UsuarioRepositorio()
+        self.__auditoria = AuditoriaServicio()
 
     def __exigir_administrador(self, id_admin):
         fila = self.__repo.buscar_por_id(id_admin) if id_admin else None
@@ -66,6 +68,10 @@ class UsuarioServicio:
         clave_hash = hashlib.sha256(clave.encode()).hexdigest()
         if rol == "EMPLEADO":
             nuevo_id = self.__repo.crear_personal(nombre, correo, clave_hash, rol, cargo, None)
-            return Empleado(nuevo_id, nombre, correo, "", cargo).to_dict()
-        nuevo_id = self.__repo.crear_personal(nombre, correo, clave_hash, rol, None, 1)
-        return Administrador(nuevo_id, nombre, correo, "", 1).to_dict()
+            nuevo = Empleado(nuevo_id, nombre, correo, "", cargo).to_dict()
+        else:
+            nuevo_id = self.__repo.crear_personal(nombre, correo, clave_hash, rol, None, 1)
+            nuevo = Administrador(nuevo_id, nombre, correo, "", 1).to_dict()
+
+        self.__auditoria.registrar("CREAR_USUARIO", f"{rol}: {nombre} ({correo})", id_admin)
+        return nuevo

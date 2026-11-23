@@ -4,6 +4,7 @@ const idObra = new URLSearchParams(window.location.search).get("obra");
 
 let funcionActual = null;
 let elegidos = [];
+let tituloObra = "";
 
 if (!usuario) window.location.href = "index.html";
 
@@ -44,6 +45,33 @@ document.getElementById("btn-reservar").addEventListener("click", async () => {
   elegirFuncion(funcionActual);   // los reservados quedan grises
 });
 
+
+const pesos = (n) => "$ " + Number(n).toLocaleString("es-CO");
+
+async function cargarTituloObra() {
+  const obras = await fetch(`${API}/obras`).then((r) => r.json());
+  const obra = obras.find((o) => String(o.id) === String(idObra));
+  if (obra) tituloObra = obra.titulo;
+}
+
+function mostrarBoleta(datos, metodo) {
+  document.getElementById("boleta").innerHTML = `
+    <p><strong>Comprador:</strong> ${usuario.nombre} (${usuario.correo})</p>
+    <p><strong>N.º de venta:</strong> ${datos.id_venta}</p>
+    <p><strong>Obra:</strong> ${tituloObra}</p>
+    <p><strong>Fecha y hora:</strong> ${funcionActual.fecha_hora}</p>
+    <p><strong>Sala:</strong> ${funcionActual.sala}</p>
+    <p><strong>Asientos:</strong> ${elegidos.map((e) => e.codigo).join(", ")}</p>
+    <p><strong>Códigos de entrada:</strong> ${datos.codigos.join(", ")}</p>
+    <p><strong>Método de pago:</strong> ${metodo}</p>
+    <p><strong>Total cancelado:</strong> ${pesos(datos.total)} (PAGO APROBADO)</p>`;
+  document.getElementById("modal-boleta").classList.add("activo");
+}
+
+document.getElementById("btn-imprimir").addEventListener("click", () => window.print());
+document.getElementById("btn-cerrar-boleta").addEventListener("click", () => {
+  document.getElementById("modal-boleta").classList.remove("activo");
+});
 
 async function cargarHorarios() {
   const respuesta = await fetch(`${API}/obras/${idObra}/funciones`);
@@ -141,7 +169,9 @@ document.getElementById("btn-comprar").addEventListener("click", async () => {
 
   resultado.textContent =
     `¡Compra exitosa! Total $${datos.total}. Tus códigos: ${datos.codigos.join(", ")}`;
+  mostrarBoleta(datos, document.getElementById("metodo").value);   // <-- nueva, va primero
   elegirFuncion(funcionActual);   // recarga el mapa: los comprados quedan ocupados
 });
 
 cargarHorarios();
+cargarTituloObra();

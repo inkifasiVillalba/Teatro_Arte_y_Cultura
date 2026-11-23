@@ -1,10 +1,12 @@
 from modelos.producto import Producto
 from repositorios.producto_repositorio import ProductoRepositorio
+from servicios.auditoria_servicio import AuditoriaServicio
 
 
 class ProductoServicio:
     def __init__(self):
         self.__repo = ProductoRepositorio()
+        self.__auditoria = AuditoriaServicio()
 
     def listar(self):
         filas = self.__repo.listar_activos()
@@ -36,6 +38,12 @@ class ProductoServicio:
 
         # Descuenta el stock y guarda la venta (venta + detalle + pago) en una transacción
         self.__repo.registrar_venta(producto.id, cantidad, producto.precio, id_empleado)
+
+        self.__auditoria.registrar(
+            "VENTA_CAFETERIA",
+            f"Venta {producto.nombre} x{cantidad} (Stock rest: {producto.existencias})",
+            id_empleado,
+        )
         return {
             "producto": producto.nombre,
             "cantidad": cantidad,
@@ -43,8 +51,7 @@ class ProductoServicio:
             "existencias": producto.existencias,
         }
 
-
-    def ajustar_stock(self, id_producto, cambio):
+    def ajustar_stock(self, id_producto, cambio, id_usuario=None):
         fila = self.__repo.buscar_por_id(id_producto)
         if fila is None:
             raise ValueError("Producto inexistente")
@@ -52,4 +59,10 @@ class ProductoServicio:
         if nuevas < 0:
             raise ValueError("El stock no puede quedar negativo")
         self.__repo.actualizar_existencias(id_producto, nuevas)
+
+        self.__auditoria.registrar(
+            "AJUSTE_INVENTARIO",
+            f"{fila['nombre']}: {int(cambio):+d} unidades (stock {nuevas})",
+            id_usuario,
+        )
         return {"existencias": nuevas}

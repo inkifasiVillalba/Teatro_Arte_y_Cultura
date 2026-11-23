@@ -18,7 +18,8 @@
     <button class="tab" data-seccion="obras">Obras</button>
     <button class="tab" data-seccion="programar">Programar</button>
     <button class="tab" data-seccion="inventario">Inventario</button>
-        <button class="tab" data-seccion="usuarios">Usuarios</button>
+    <button class="tab" data-seccion="usuarios">Usuarios</button>
+    <button class="tab" data-seccion="auditoria">Auditoría</button>
   </nav>
 
   <!-- DASHBOARD -->
@@ -74,7 +75,7 @@
     <h2>Funciones programadas</h2>
     <table class="tabla">
       <thead>
-        <tr><th>Obra</th><th>Sala</th><th>Fecha</th><th>Horario</th><th>Precio</th><th>Ocupación</th><th>Estado</th></tr>
+        <tr><th>Obra</th><th>Sala</th><th>Fecha</th><th>Horario</th><th>Precio</th><th>Ocupación</th><th>Estado</th><th>Acción</th></tr>
       </thead>
       <tbody id="tabla-funciones"></tbody>
     </table>
@@ -111,6 +112,17 @@
         <tr><th>Usuario</th><th>Correo</th><th>Rol</th><th>Cargo / Nivel / Teléfono</th><th>Último acceso</th><th>Estado</th></tr>
       </thead>
       <tbody id="tabla-usuarios"></tbody>
+    </table>
+  </section>
+  
+    <!-- AUDITORÍA -->
+  <section id="seccion-auditoria" hidden>
+    <h2>Registro de operaciones (auditoría inmutable)</h2>
+    <table class="tabla">
+      <thead>
+        <tr><th>Fecha y hora</th><th>Usuario</th><th>Acción</th><th>Detalle</th></tr>
+      </thead>
+      <tbody id="tabla-auditoria"></tbody>
     </table>
   </section>
 

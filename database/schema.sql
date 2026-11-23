@@ -168,12 +168,14 @@ INSERT INTO obras (titulo, genero, clasificacion, director, descripcion, duracio
 ('Crimen y Misterio en la Mansión Blackwood', 'SUSPENSO', '+16', 'Rodrigo Saldarriaga', 'Un misterio por resolver', 110);
 
 INSERT INTO productos (nombre, categoria, precio, existencias, stock_minimo) VALUES
-('Palomitas Artesanales Caramelo & Sal Marina (Grande)', 'Snacks', 16000, 42, 15),
-('Copa de Vino Tinto Malbec Reserva', 'Bebidas', 24000, 28, 10),
-('Café Espresso Colombiano de Origen Especial', 'Bebidas', 8500, 65, 20),
-('Chocolates Finos de Autor (Caja 6 bombones)', 'Dulcería', 19000, 8, 12),
-('Agua de Manantial con Gas & Rodaja de Cítrico', 'Bebidas', 7000, 50, 15),
-('Combo Gala Teatral (2 Copas Vino + Tabla Quesos & Uvas)', 'Combos', 52000, 14, 5);
+('Crispetas Grandes', 'Snacks', 18000, 42, 15),
+('Gaseosa 400 ml', 'Bebidas', 7000, 60, 20),
+('Café Americano', 'Bebidas', 5500, 65, 20),
+('Chocolatina', 'Dulcería', 4500, 40, 12),
+('Agua 500 ml', 'Bebidas', 4000, 50, 15),
+('Combo Crispetas + Gaseosa', 'Combos', 22000, 20, 5),
+('Perro Caliente', 'Snacks', 12000, 30, 10),
+('Nachos con Queso', 'Snacks', 14000, 25, 10);
 
 INSERT INTO funciones (id_obra, id_sala, fecha_hora, precio) VALUES
 (1, 1, DATE_FORMAT(DATE_ADD(NOW(), INTERVAL 1 DAY), '%Y-%m-%d 19:00:00'), 65000),

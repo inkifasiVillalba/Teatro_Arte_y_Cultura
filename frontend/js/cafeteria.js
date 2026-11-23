@@ -10,6 +10,18 @@ document.getElementById("btn-volver").addEventListener("click", () => {
   window.location.href = "empleado.html";
 });
 
+function iconoProducto(nombre) {
+  const n = nombre.toLowerCase();
+  if (n.includes("combo")) return "🎟️";
+  if (n.includes("crispeta")) return "🍿";
+  if (n.includes("gaseosa")) return "🥤";
+  if (n.includes("café")) return "☕";
+  if (n.includes("chocolat")) return "🍫";
+  if (n.includes("agua")) return "💧";
+  if (n.includes("perro")) return "🌭";
+  if (n.includes("nacho")) return "🧀";
+  return "🍽️";
+}
 
 async function cargarProductos() {
   const respuesta = await fetch(`${API}/productos`);
@@ -19,13 +31,16 @@ async function cargarProductos() {
 
   for (const p of productos) {
     lista.innerHTML += `
-      <div class="obra">
-        <span class="etiqueta">${p.categoria} · Stock: ${p.existencias} · Mínimo: ${p.stock_minimo}</span>
-        ${p.bajo_stock ? '<span class="alerta">Stock bajo</span>' : ''}
-        <h2>${p.nombre}</h2>
-        <p>$${p.precio}</p>
-        <input type="number" id="cant-${p.id}" value="1" min="1">
-        <button class="btn-principal" onclick="vender(${p.id})">Vender</button>
+      <div class="producto">
+        <div>
+          <span>${iconoProducto(p.nombre)} ${p.nombre}</span>
+          ${p.bajo_stock ? '<span class="alerta">Stock bajo</span>' : ''}<br>
+          <small>Stock: ${p.existencias} | $${Number(p.precio).toLocaleString("es-CO")}</small>
+        </div>
+        <div class="producto-accion">
+          <input type="number" id="cant-${p.id}" value="1" min="1">
+          <button class="btn-principal" onclick="vender(${p.id})">Vender</button>
+        </div>
       </div>`;
   }
 }

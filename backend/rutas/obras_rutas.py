@@ -27,6 +27,7 @@ def crear_obra():
             datos.get("director", ""),
             datos.get("descripcion", ""),
             datos.get("duracion_min", 0),
+            datos.get("id_usuario"),
         )
     except ValueError as error:
         return jsonify({"error": str(error)}), 400
@@ -35,8 +36,9 @@ def crear_obra():
 
 @obras_bp.route("/api/obras/<int:id_obra>/desactivar", methods=["POST"])
 def desactivar_obra(id_obra):
+    datos = request.get_json(silent=True) or {}
     try:
-        servicio.desactivar(id_obra)
+        servicio.desactivar(id_obra, datos.get("id_usuario"))
     except ValueError as error:
         return jsonify({"error": str(error)}), 400
     return jsonify({"mensaje": "Obra desactivada"})

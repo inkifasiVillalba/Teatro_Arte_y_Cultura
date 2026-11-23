@@ -98,3 +98,32 @@ class FuncionRepositorio:
         cursor.close()
         conexion.close()
         return nuevo_id
+
+    def buscar_por_id(self, id_funcion):
+        conexion = self.__conectar()
+        cursor = conexion.cursor(dictionary=True)
+        cursor.execute(
+            "SELECT f.id, f.fecha_hora, f.estado, o.titulo, "
+            " (SELECT COUNT(*) FROM entradas e WHERE e.id_funcion = f.id "
+            "  AND e.estado <> 'ANULADA') AS vendidas, "
+            " (SELECT COUNT(*) FROM reservas r WHERE r.id_funcion = f.id "
+            "  AND r.estado = 'PENDIENTE') AS reservas "
+            "FROM funciones f JOIN obras o ON f.id_obra = o.id "
+            "WHERE f.id = %s",
+            (id_funcion,),
+        )
+        fila = cursor.fetchone()
+        cursor.close()
+        conexion.close()
+        return fila
+
+    def actualizar_estado(self, id_funcion, estado):
+        conexion = self.__conectar()
+        cursor = conexion.cursor()
+        cursor.execute(
+            "UPDATE funciones SET estado = %s WHERE id = %s",
+            (estado, id_funcion),
+        )
+        conexion.commit()
+        cursor.close()
+        conexion.close()

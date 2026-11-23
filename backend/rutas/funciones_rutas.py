@@ -35,7 +35,8 @@ def programar_funcion():
     d = request.get_json() or {}
     try:
         resultado = servicio.programar(
-            d.get("id_obra"), d.get("id_sala"), d.get("fecha_hora"), d.get("precio")
+            d.get("id_obra"), d.get("id_sala"), d.get("fecha_hora"), d.get("precio"),
+            d.get("id_usuario"),
         )
     except ValueError as error:
         return jsonify({"error": str(error)}), 400
@@ -45,3 +46,12 @@ def programar_funcion():
 @funciones_bp.route("/api/salas")
 def listar_salas():
     return jsonify([s.to_dict() for s in SalaRepositorio().listar()])
+
+@funciones_bp.route("/api/funciones/<int:id_funcion>/cancelar", methods=["POST"])
+def cancelar_funcion(id_funcion):
+    d = request.get_json(silent=True) or {}
+    try:
+        servicio.cancelar(id_funcion, d.get("id_usuario"))
+    except ValueError as error:
+        return jsonify({"error": str(error)}), 400
+    return jsonify({"mensaje": "Función cancelada"})

@@ -149,10 +149,10 @@ header h1 { font-size: 1.3rem; text-align: left; }
 
 
 /* ---- Cafetería (filas compactas como el prototipo) ---- */
-#lista-productos {
+#lista-productos, #lista-inventario{
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
-  gap: 10px;
+  gap: 50px;
 }
 .producto {
   display: flex; justify-content: space-between; align-items: center; gap: 10px;
@@ -163,4 +163,10 @@ header h1 { font-size: 1.3rem; text-align: left; }
 .producto-accion input { width: 60px; padding: 6px; }
 .producto-accion .btn-principal {
   width: auto; margin-top: 0; padding: 8px 14px; font-size: 0.8rem;
+}
+
+.producto-accion button:not(.btn-principal) {
+  padding: 8px 14px; cursor: pointer; font-size: 0.8rem;
+  background: transparent; color: #f5e6c8;
+  border: 1px solid #e07b00; border-radius: 8px;
 }

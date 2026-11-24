@@ -9,7 +9,7 @@ servicio = EntradaServicio()
 def validar_entrada():
     datos = request.get_json() or {}
     try:
-        resultado = servicio.validar(datos.get("codigo", ""))
+                resultado = servicio.validar(datos.get("codigo", ""), datos.get("id_usuario"))
     except ValueError as error:
         return jsonify({"error": str(error)}), 400
     return jsonify(resultado)

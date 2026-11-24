@@ -19,7 +19,7 @@ document.getElementById("btn-validar").addEventListener("click", async () => {
   const respuesta = await fetch(`${API}/entradas/validar`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ codigo }),
+    body: JSON.stringify({ codigo, id_usuario: usuario.id }),
   });
   const datos = await respuesta.json();
 

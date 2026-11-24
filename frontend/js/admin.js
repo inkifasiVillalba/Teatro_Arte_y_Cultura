@@ -96,12 +96,15 @@ function etiquetaEstado(estado) {
 }
 
 // ---------- Programar funciones ----------
+let funcionesCargadas = [];
+
 async function cargarProgramacion() {
   const [obras, salas, funciones] = await Promise.all([
     fetch(`${API}/obras`).then((r) => r.json()),
     fetch(`${API}/salas`).then((r) => r.json()),
     fetch(`${API}/funciones`).then((r) => r.json()),
   ]);
+  funcionesCargadas = funciones;
 
   document.getElementById("f-obra").innerHTML =
     obras.map((o) => `<option value="${o.id}">${o.titulo} (${o.duracion_min} min)</option>`).join("");
@@ -118,10 +121,24 @@ async function cargarProgramacion() {
     .join("");
 }
 
-async function cancelarFuncion(id) {
-  if (!confirm("¿Seguro que quieres cancelar esta función?")) return;
+let idFuncionPorCancelar = null;
+
+function cancelarFuncion(id) {
+  const f = funcionesCargadas.find((x) => x.id === id);
+  idFuncionPorCancelar = id;
+  document.getElementById("texto-confirmar").textContent =
+    `¿Seguro que quieres cancelar la función de "${f.obra}" del ${f.fecha} (${f.horario})?`;
+  document.getElementById("modal-confirmar").classList.add("activo");
+}
+
+document.getElementById("btn-confirmar-no").addEventListener("click", () => {
+  document.getElementById("modal-confirmar").classList.remove("activo");
+});
+
+document.getElementById("btn-confirmar-si").addEventListener("click", async () => {
+  document.getElementById("modal-confirmar").classList.remove("activo");
   const mensaje = document.getElementById("resultado-funcion");
-  const respuesta = await fetch(`${API}/funciones/${id}/cancelar`, {
+  const respuesta = await fetch(`${API}/funciones/${idFuncionPorCancelar}/cancelar`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ id_usuario: usuario.id }),
@@ -130,7 +147,7 @@ async function cancelarFuncion(id) {
   mensaje.style.color = respuesta.ok ? "#6bd68a" : "#ff6b6b";
   mensaje.textContent = respuesta.ok ? datos.mensaje : datos.error;
   cargarProgramacion();
-}
+});
 
 document.getElementById("btn-programar").addEventListener("click", async () => {
   const mensaje = document.getElementById("resultado-funcion");
@@ -164,13 +181,16 @@ async function cargarInventario() {
   lista.innerHTML = "";
   for (const p of productos) {
     lista.innerHTML += `
-      <div class="obra">
-        <span class="etiqueta">${p.categoria}</span>
-        <h2>${p.nombre}</h2>
-        <p>Stock disponible: ${p.existencias} uds · Mínimo: ${p.stock_minimo}
-          ${p.bajo_stock ? '<span class="alerta">Stock bajo</span>' : ''}</p>
-        <button onclick="ajustarStock(${p.id}, -5)">-5</button>
-        <button class="btn-principal" onclick="ajustarStock(${p.id}, 10)">+10</button>
+      <div class="producto">
+        <div>
+          <span>${iconoProducto(p.nombre)} ${p.nombre}</span>
+          ${p.bajo_stock ? '<span class="alerta">Stock bajo</span>' : ''}<br>
+          <small>${p.categoria} · Stock: ${p.existencias} | Mínimo: ${p.stock_minimo} | $${Number(p.precio).toLocaleString("es-CO")}</small>
+        </div>
+        <div class="producto-accion">
+          <button onclick="ajustarStock(${p.id}, -5)">-5</button>
+          <button class="btn-principal" onclick="ajustarStock(${p.id}, 10)">+10</button>
+        </div>
       </div>`;
   }
 }
